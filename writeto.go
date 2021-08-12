@@ -107,7 +107,7 @@ func (w *messageWriter) closeMultipart() {
 func (w *messageWriter) writePart(p *part, charset string) {
 	w.writeHeaders(map[string][]string{
 		"Content-Type":              {p.contentType + "; charset=" + charset},
-		"Content-Transfer-Encoding": "binary",
+		"Content-Transfer-Encoding": "base64",
 	})
 	w.writeBody(p.copier, p.encoding)
 }
@@ -123,7 +123,7 @@ func (w *messageWriter) addFiles(files []*file, isAttachment bool) {
 		}
 
 		if _, ok := f.Header["Content-Transfer-Encoding"]; !ok {
-			f.setHeader("Content-Transfer-Encoding", "binary")
+			f.setHeader("Content-Transfer-Encoding", "base64")
 		}
 
 		if _, ok := f.Header["Content-Disposition"]; !ok {
